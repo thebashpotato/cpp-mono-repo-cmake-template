@@ -33,7 +33,7 @@ target_compile_features(myproject_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD
 add_library(myproject_workspace::myproject_options ALIAS myproject_options)
 add_library(myproject_workspace::myproject_warnings ALIAS myproject_warnings)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(myproject_ENABLE_DEVELOPER_MODE)
   enable_testing()
 endif()
 

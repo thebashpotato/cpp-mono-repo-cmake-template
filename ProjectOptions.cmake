@@ -19,7 +19,7 @@ macro(myproject_supports_sanitizers)
 endmacro()
 
 macro(myproject_setup_options)
-  option(myproject_ENABLE_HARDENING "Enable hardening" ON)
+  option(myproject_ENABLE_HARDENING "Enable hardening" OFF)
   option(myproject_ENABLE_COVERAGE "Enable coverage reporting" OFF)
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
@@ -42,6 +42,7 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" OFF)
     option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
     option(myproject_ENABLE_CACHE "Enable ccache" OFF)
+    option(myproject_ENABLE_DEVELOPER_MODE "Enable unit tests and formatting" OFF)
   else()
     option(myproject_ENABLE_IPO "Enable IPO/LTO" OFF)
     option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
@@ -58,6 +59,7 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" OFF)
     option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
     option(myproject_ENABLE_CACHE "Enable ccache" ON)
+    option(myproject_ENABLE_DEVELOPER_MODE "Enable unit tests and formatting" ON)
   endif()
 
   if(NOT PROJECT_IS_TOP_LEVEL)
@@ -75,7 +77,8 @@ macro(myproject_setup_options)
       myproject_ENABLE_CPPCHECK
       myproject_ENABLE_COVERAGE
       myproject_ENABLE_PCH
-      myproject_ENABLE_CACHE)
+      myproject_ENABLE_CACHE
+      myproject_ENABLE_DEVELOPER_MODE)
   endif()
 endmacro()
 

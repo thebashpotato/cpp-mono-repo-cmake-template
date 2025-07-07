@@ -21,22 +21,4 @@ function(myproject_setup_dependencies)
         "gtest_force_shared_crt ON")
     endif()
   endif()
-
-  # For each dependency, see if it's already been provided to us by a parent
-  # project
-  if(NOT TARGET fmtlib::fmtlib)
-    cpmaddpackage("gh:fmtlib/fmt#11.0.2")
-  endif()
-
-  if(NOT TARGET spdlog::spdlog)
-    cpmaddpackage(
-      NAME
-      spdlog
-      VERSION
-      1.14.1
-      GITHUB_REPOSITORY
-      "gabime/spdlog"
-      OPTIONS
-      "SPDLOG_FMT_EXTERNAL ON")
-  endif()
 endfunction()

@@ -24,7 +24,7 @@ message(STATUS "Building ${PROJECT_NAME} in [${CMAKE_BUILD_TYPE}] mode")
 #
 # Add tests if in Debug mode
 #
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(myproject_ENABLE_DEVELOPER_MODE)
   message(STATUS "Tests active for ${PROJECT_NAME}")
   add_subdirectory(tests)
 endif()
@@ -41,8 +41,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/configure_files/config.hpp.in
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
 # Link required dependencies
-target_link_libraries(${PROJECT_NAME} PRIVATE myproject_options myproject_warnings
-                                              fmt::fmt spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE myproject_options myproject_warnings)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PACKAGE_INCLUDE_DIR}>
@@ -56,7 +55,7 @@ set_target_properties(
              CXX_VISIBILITY_PRESET hidden
              VISIBILITY_INLINES_HIDDEN YES)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(myproject_ENABLE_DEVELOPER_MODE)
   run_clang_format(${PACKAGE_INCLUDE_DIR})
   run_clang_format(${PACKAGE_SOURCE_DIR})
   run_clang_format(${PACKAGE_TEST_DIR})

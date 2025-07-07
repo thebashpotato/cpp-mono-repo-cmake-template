@@ -10,7 +10,6 @@
             "name": "conf-common",
             "description": "General settings that apply to all configurations",
             "hidden": true,
-            "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}"
         },
@@ -33,15 +32,19 @@
                 "strategy": "external"
             },
             "cacheVariables": {
-                "ENABLE_CPPCHECK_DEFAULT": "FALSE",
-                "ENABLE_CLANG_TIDY_DEFAULT": "FALSE"
+                "myproject_ENABLE_CPPCHECK": "FALSE",
+                "myproject_ENABLE_CLANG_TIDY": "FALSE"
             }
         },
         {
             "name": "conf-unixlike-common",
             "description": "Unix-like OS settings for gcc and clang toolchains",
             "hidden": true,
+            "generator": "Ninja",
             "inherits": "conf-common",
+            "cacheVariables": {
+                "myproject_ENABLE_DEVELOPER_MODE": "ON"
+            },
             "condition": {
                 "type": "inList",
                 "string": "${hostSystemName}",
@@ -61,11 +64,12 @@
             "displayName": "msvc Debug (Developer Mode)",
             "description": "Target Windows with the msvc compiler, debug build type",
             "inherits": "conf-windows-common",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "ENABLE_DEVELOPER_MODE": "ON"
+                "myproject_ENABLE_DEVELOPER_MODE": "ON"
             }
         },
         {
@@ -73,11 +77,12 @@
             "displayName": "msvc Release (Developer Mode)",
             "description": "Target Windows with the msvc compiler, release build type",
             "inherits": "conf-windows-common",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "ENABLE_DEVELOPER_MODE": "ON"
+                "myproject_ENABLE_DEVELOPER_MODE": "ON"
             }
         },
         {
@@ -85,11 +90,12 @@
             "displayName": "msvc Debug (User Mode)",
             "description": "Target Windows with the msvc compiler, debug build type",
             "inherits": "conf-windows-common",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "ENABLE_DEVELOPER_MODE": "OFF"
+                "myproject_ENABLE_DEVELOPER_MODE": "OFF"
             }
         },
         {
@@ -97,11 +103,12 @@
             "displayName": "msvc Release (User Mode)",
             "description": "Target Windows with the msvc compiler, release build type",
             "inherits": "conf-windows-common",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "ENABLE_DEVELOPER_MODE": "OFF"
+                "myproject_ENABLE_DEVELOPER_MODE": "OFF"
             }
         },
         {
@@ -109,9 +116,10 @@
             "displayName": "clang Debug",
             "description": "Target Windows with the clang compiler, debug build type",
             "inherits": "conf-windows-common",
+            "generator": "Ninja",
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-cl",
-                "CMAKE_CXX_COMPILER": "clang-cl",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "Debug"
             },
             "vendor": {
@@ -125,9 +133,10 @@
             "displayName": "clang Release",
             "description": "Target Windows with the clang compiler, release build type",
             "inherits": "conf-windows-common",
+            "generator": "Ninja",
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-cl",
-                "CMAKE_CXX_COMPILER": "clang-cl",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             },
             "vendor": {
@@ -155,7 +164,8 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "myproject_ENABLE_DEVELOPER_MODE": "OFF"
             }
         },
         {
@@ -177,7 +187,8 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "myproject_ENABLE_DEVELOPER_MODE": "OFF"
             }
         }
     ],

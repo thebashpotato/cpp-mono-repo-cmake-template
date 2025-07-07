@@ -20,7 +20,7 @@ set(SOURCE_FILES "${PACKAGE_SOURCE_DIR}/main.cpp")
 #
 message(STATUS "Building ${PROJECT_NAME} in [${CMAKE_BUILD_TYPE}] mode")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(myproject_ENABLE_DEVELOPER_MODE)
   message(STATUS "Tests active for ${PROJECT_NAME}")
   add_subdirectory(tests)
 endif()
@@ -30,11 +30,10 @@ endif()
 #
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE myproject_options myproject_warnings)
-target_link_system_libraries(${PROJECT_NAME} PRIVATE fmt::fmt spdlog::spdlog
-                             myproject_core)
+target_link_libraries(${PROJECT_NAME} PRIVATE myproject_options
+                                              myproject_warnings myproject_core)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(myproject_ENABLE_DEVELOPER_MODE)
   run_clang_format(${PACKAGE_SOURCE_DIR})
   run_clang_format(${PACKAGE_TEST_DIR})
 endif()
