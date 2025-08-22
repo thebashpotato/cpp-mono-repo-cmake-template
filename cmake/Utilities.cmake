@@ -15,8 +15,7 @@ function(find_substring_by_prefix output prefix input)
       PARENT_SCOPE)
 endfunction()
 
-# A function to set environment variables of CMake from the output of `cmd /c
-# set`
+# A function to set environment variables of CMake from the output of `cmd /c set`
 function(set_env_from_string env_string)
   # replace ; in paths with __sep__ so we can split on ;
   string(REGEX REPLACE ";" "__sep__" env_string_sep_added "${env_string}")

@@ -7,8 +7,7 @@ function(
   ENABLE_SANITIZER_THREAD
   ENABLE_SANITIZER_MEMORY)
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
-                                             ".*Clang")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
     set(SANITIZERS "")
 
     if(${ENABLE_SANITIZER_ADDRESS})
@@ -25,10 +24,7 @@ function(
 
     if(${ENABLE_SANITIZER_THREAD})
       if("address" IN_LIST SANITIZERS OR "leak" IN_LIST SANITIZERS)
-        message(
-          WARNING
-            "Thread sanitizer does not work with Address and Leak sanitizer enabled"
-        )
+        message(WARNING "Thread sanitizer does not work with Address and Leak sanitizer enabled")
       else()
         list(APPEND SANITIZERS "thread")
       endif()
@@ -42,10 +38,7 @@ function(
       if("address" IN_LIST SANITIZERS
          OR "thread" IN_LIST SANITIZERS
          OR "leak" IN_LIST SANITIZERS)
-        message(
-          WARNING
-            "Memory sanitizer does not work with Address, Thread or Leak sanitizer enabled"
-        )
+        message(WARNING "Memory sanitizer does not work with Address, Thread or Leak sanitizer enabled")
       else()
         list(APPEND SANITIZERS "memory")
       endif()
@@ -67,10 +60,8 @@ function(
   if(LIST_OF_SANITIZERS)
     if(NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
       if(NOT MSVC)
-        target_compile_options(${myproject_name}
-                               INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
-        target_link_options(${myproject_name} INTERFACE
-                            -fsanitize=${LIST_OF_SANITIZERS})
+        target_compile_options(${myproject_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
+        target_link_options(${myproject_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       else()
         string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
         if("${index_of_vs_install_dir}" STREQUAL "-1")
@@ -79,12 +70,8 @@ function(
               "Using MSVC sanitizers requires setting the MSVC environment before building the project. Please manually open the MSVC command prompt and rebuild the project."
           )
         endif()
-        target_compile_options(
-          ${myproject_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi
-                                    /INCREMENTAL:NO)
-        target_compile_definitions(
-          ${myproject_name} INTERFACE _DISABLE_VECTOR_ANNOTATION
-                                    _DISABLE_STRING_ANNOTATION)
+        target_compile_options(${myproject_name} INTERFACE /fsanitize=${LIST_OF_SANITIZERS} /Zi /INCREMENTAL:NO)
+        target_compile_definitions(${myproject_name} INTERFACE _DISABLE_VECTOR_ANNOTATION _DISABLE_STRING_ANNOTATION)
         target_link_options(${myproject_name} INTERFACE /INCREMENTAL:NO)
       endif()
     endif()

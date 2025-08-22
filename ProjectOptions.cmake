@@ -4,11 +4,9 @@ include(CheckCXXCompilerFlag)
 include(CheckCXXSourceCompiles)
 
 macro(myproject_supports_sanitizers)
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND NOT WIN32)
+  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
 
-    message(
-      STATUS "Sanity checking UndefinedBehaviorSanitizer, it should be supported on this platform")
+    message(STATUS "Sanity checking UndefinedBehaviorSanitizer, it should be supported on this platform")
     set(TEST_PROGRAM "int main() { return 0; }")
 
     # Check if UndefinedBehaviorSanitizer works at link time
@@ -27,8 +25,7 @@ macro(myproject_supports_sanitizers)
     set(SUPPORTS_UBSAN OFF)
   endif()
 
-  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
-     AND WIN32)
+  if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND WIN32)
     set(SUPPORTS_ASAN OFF)
   else()
     if(NOT WIN32)
@@ -56,9 +53,8 @@ endmacro()
 macro(myproject_setup_options)
   option(myproject_ENABLE_HARDENING "Enable hardening" ON)
   option(myproject_ENABLE_COVERAGE "Enable coverage reporting" OFF)
-  cmake_dependent_option(
-    myproject_ENABLE_GLOBAL_HARDENING "Attempt to push hardening options to built dependencies" ON
-    myproject_ENABLE_HARDENING OFF)
+  cmake_dependent_option(myproject_ENABLE_GLOBAL_HARDENING "Attempt to push hardening options to built dependencies" ON
+                         myproject_ENABLE_HARDENING OFF)
 
   myproject_supports_sanitizers()
 
@@ -96,6 +92,7 @@ macro(myproject_setup_options)
 
   if(NOT PROJECT_IS_TOP_LEVEL)
     mark_as_advanced(
+      myproject_ENABLE_DEVELOPER_MODE
       myproject_ENABLE_IPO
       myproject_WARNINGS_AS_ERRORS
       myproject_ENABLE_USER_LINKER
@@ -109,16 +106,31 @@ macro(myproject_setup_options)
       myproject_ENABLE_CPPCHECK
       myproject_ENABLE_COVERAGE
       myproject_ENABLE_PCH
-      myproject_ENABLE_CACHE
-      myproject_ENABLE_DEVELOPER_MODE)
+      myproject_ENABLE_CACHE)
   endif()
 
   if(myproject_ENABLE_DEVELOPER_MODE)
+    set(myproject_WARNINGS_AS_ERRORS ON)
+    set(myproject_ENABLE_SANITIZER_LEAK ON)
     set(myproject_ENABLE_CLANG_TIDY ON)
-    set(myproject_ENABLE_CLANG_CACHE ON)
+    set(myproject_ENABLE_CACHE ON)
   endif()
 
-  message(STATUS "")
+  message(STATUS "myproject_ENABLE_DEVELOPER_MODE = ${myproject_ENABLE_DEVELOPER_MODE}")
+  message(STATUS "myproject_ENABLE_IPO = ${myproject_ENABLE_IPO}")
+  message(STATUS "myproject_WARNINGS_AS_ERRORS = ${myproject_WARNINGS_AS_ERRORS}")
+  message(STATUS "myproject_ENABLE_USER_LINKER = ${myproject_ENABLE_USER_LINKER}")
+  message(STATUS "myproject_ENABLE_SANITIZER_ADDRESS = ${myproject_ENABLE_SANITIZER_ADDRESS}")
+  message(STATUS "myproject_ENABLE_SANITIZER_LEAK = ${myproject_ENABLE_SANITIZER_LEAK}")
+  message(STATUS "myproject_ENABLE_SANITIZER_UNDEFINED = ${myproject_ENABLE_SANITIZER_UNDEFINED}")
+  message(STATUS "myproject_ENABLE_SANITIZER_THREAD = ${myproject_ENABLE_SANITIZER_THREAD}")
+  message(STATUS "myproject_ENABLE_SANITIZER_MEMORY = ${myproject_ENABLE_SANITIZER_MEMORY}")
+  message(STATUS "myproject_ENABLE_UNITY_BUILD = ${myproject_ENABLE_UNITY_BUILD}")
+  message(STATUS "myproject_ENABLE_CLANG_TIDY = ${myproject_ENABLE_CLANG_TIDY}")
+  message(STATUS "myproject_ENABLE_CPPCHECK = ${myproject_ENABLE_CPPCHECK}")
+  message(STATUS "myproject_ENABLE_COVERAGE = ${myproject_ENABLE_COVERAGE}")
+  message(STATUS "myproject_ENABLE_PCH = ${myproject_ENABLE_PCH}")
+  message(STATUS "myproject_ENABLE_CACHE = ${myproject_ENABLE_CACHE}")
 endmacro()
 
 macro(myproject_global_options)
@@ -140,9 +152,7 @@ macro(myproject_global_options)
     else()
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
-    message(
-      "${myproject_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${myproject_ENABLE_SANITIZER_UNDEFINED}"
-    )
+    message("${myproject_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${myproject_ENABLE_SANITIZER_UNDEFINED}")
     myproject_enable_hardening(myproject_options ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 endmacro()
@@ -166,8 +176,7 @@ macro(myproject_local_options)
   include(cmake/Sanitizers.cmake)
   myproject_enable_sanitizers(
     myproject_options ${myproject_ENABLE_SANITIZER_ADDRESS} ${myproject_ENABLE_SANITIZER_LEAK}
-    ${myproject_ENABLE_SANITIZER_UNDEFINED} ${myproject_ENABLE_SANITIZER_THREAD}
-    ${myproject_ENABLE_SANITIZER_MEMORY})
+    ${myproject_ENABLE_SANITIZER_UNDEFINED} ${myproject_ENABLE_SANITIZER_THREAD} ${myproject_ENABLE_SANITIZER_MEMORY})
 
   set_target_properties(myproject_options PROPERTIES UNITY_BUILD ${myproject_ENABLE_UNITY_BUILD})
 
@@ -198,8 +207,8 @@ macro(myproject_local_options)
   if(myproject_WARNINGS_AS_ERRORS)
     check_cxx_compiler_flag("-Wl,--fatal-warnings" LINKER_FATAL_WARNINGS)
     if(LINKER_FATAL_WARNINGS)
-      # This is not working consistently, so disabling for now target_link_options(myproject_options
-      # INTERFACE -Wl,--fatal-warnings)
+      # This is not working consistently, so disabling for now target_link_options(myproject_options INTERFACE
+      # -Wl,--fatal-warnings)
     endif()
   endif()
 

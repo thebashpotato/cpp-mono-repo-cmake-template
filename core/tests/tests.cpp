@@ -16,8 +16,8 @@ TEST(FactorialTestSuite, Test1)
 
 TEST(ConfigFileTestSuite, Test1)
 {
-    ASSERT_EQ(myproject_name, "myproject_core");
-    ASSERT_EQ(myproject_version_major, 0);
-    ASSERT_EQ(myproject_version_minor, 1);
-    ASSERT_EQ(myproject_version_patch, 0);
+    ASSERT_EQ(NAME, "myproject_core");
+    ASSERT_EQ(VERSION_MAJOR, 0);
+    ASSERT_EQ(VERSION_MINOR, 1);
+    ASSERT_EQ(VERSION_PATCH, 0);
 }

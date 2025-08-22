@@ -14,7 +14,7 @@
             "installDir": "${sourceDir}/out/install/${presetName}",
             "generator": "Ninja",
             "cacheVariables": {
-              "BUILD_SHARED_LIBS": "ON",
+              "BUILD_SHARED_LIBS": "OFF",
               "myproject_ENABLE_DEVELOPER_MODE": "OFF"
             }
         },

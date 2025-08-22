@@ -7,7 +7,7 @@ using namespace myproject_core;
 
 auto main() -> int
 {
-    std::cout << myproject_name << " " << myproject_version << '\n';
+    std::cout << NAME << " " << VERSION << '\n';
     std::cout << "Factorial 10 = " << Factorial(10) << '\n';
 
     return EXIT_SUCCESS;
