@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+# Set the namespace for imported targets
+set(${PROJECT_NAME}_NAMESPACE "@PACKAGE_NAMESPACE_NAME@::")
+
+# Load the targets file created by install(EXPORT ...)
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
+
+# Provide include directory hints
+set(${PROJECT_NAME}_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR@")
+
+# Provide library directory hints
+set(${PROJECT_NAME}_LIB_DIRS "@PACKAGE_LIB_INSTALL_DIR@")
+
+# Optional: Provide version information
+set(${PROJECT_NAME}_VERSION "@PROJECT_VERSION@")

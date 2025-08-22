@@ -26,7 +26,7 @@ myproject_setup_options()
 myproject_global_options()
 
 include(Dependencies.cmake)
-myproject_setup_dependencies()
+myproject_setup_dependencies(${myproject_ENABLE_DEVELOPER_MODE})
 myproject_local_options()
 
 target_compile_features(myproject_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})

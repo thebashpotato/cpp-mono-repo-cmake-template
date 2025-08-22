@@ -2,9 +2,9 @@ include(cmake/CPM.cmake)
 
 # Done as a function so that updates to variables like CMAKE_CXX_FLAGS don't
 # propagate out to other targets
-function(myproject_setup_dependencies)
+function(myproject_setup_dependencies DEV_MODE)
 
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  if(DEV_MODE)
     if(NOT TARGET gtest)
       cpmaddpackage(
         NAME
